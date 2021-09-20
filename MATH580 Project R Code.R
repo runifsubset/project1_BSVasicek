@@ -10,6 +10,7 @@
 ## --------------------------------------------
 
 ## Section 1: Libraries & Data ----------------
+install.packages(ggplot2,reshape,tidyr,gridExtra)
 
 library(ggplot2)
 library(reshape)
@@ -21,25 +22,25 @@ library(gridExtra)
 ## 2.1 Price series plot
 
 # Define initial values
-S0 = 1 
-sigma = sqrt(0.02)
+S0 <-  1 
+sigma <- sqrt(0.02)
 rho = 0.03
-c = 1
-t = seq(0, 10, by=0.001)
+c <- 1
+t <- seq(0, 10, by=0.001)
 
 # Define price
-P = S0*pnorm((log(S0/c)+(rho+(sigma^2)/2)*t)/(sigma*sqrt(t)))-(c*exp(-rho*t))*pnorm((log(S0/c)+(rho-(sigma^2)/2)*t)/(sigma*sqrt(t)))
+P <- S0*pnorm((log(S0/c)+(rho+(sigma^2)/2)*t)/(sigma*sqrt(t)))-(c*exp(-rho*t))*pnorm((log(S0/c)+(rho-(sigma^2)/2)*t)/(sigma*sqrt(t)))
 
 # Produce plot for figure 1
-fig1 = data.frame(P, t)
-plot1 = ggplot(data = fig1, aes(t,P))+geom_line() + 
+fig1 <- data.frame(P, t)
+plot1 <- ggplot(data = fig1, aes(t,P))+geom_line() + 
   ggtitle("Option Price over time.") +
   xlab("Time (t)") + ylab("Option Price (P)")
 
 ## 2.2 Investigation
 
 # Set t=10
-t10=10
+t10<-10
 
 ## 2.2.1 Varying volatility (sigma)
 
@@ -47,39 +48,39 @@ t10=10
 sigma1=seq(0,2, by=0.01)
 
 # Calculate new price series
-P1=S0*pnorm((log(S0/c)+(rho+(sigma1^2)/2)*t10)/(sigma1*sqrt(t10)))-(c*exp(-rho*t10))*pnorm((log(S0/c)+(rho-(sigma1^2)/2)*t10)/(sigma1*sqrt(t10)))
+P1<-S0*pnorm((log(S0/c)+(rho+(sigma1^2)/2)*t10)/(sigma1*sqrt(t10)))-(c*exp(-rho*t10))*pnorm((log(S0/c)+(rho-(sigma1^2)/2)*t10)/(sigma1*sqrt(t10)))
 
 # Produce plot for figure 2
-fig2 = data.frame(P1, sigma1)
-plot2 = ggplot(data = fig2, aes(sigma1,P1))+geom_line() + 
+fig2 <- data.frame(P1, sigma1)
+plot2 <- ggplot(data = fig2, aes(sigma1,P1))+geom_line() + 
   ggtitle("Option price at time t=10 for various volatility levels.") +
   xlab("Volatility (sigma)") + ylab("Option Price (P) at t=10.")
 
 ## 2.2.2 Varying interest rate (rho)
 
 # Define varying rho
-rho2=seq(0, 0.8, by=0.005) 
+rho2 <-seq(0, 0.8, by=0.005) 
 
 # Calculate new price series
-P2=S0*pnorm((log(S0/c)+(rho2+(sigma^2)/2)*t10)/(sigma*sqrt(t10)))-(c*exp(-rho2*t10))*pnorm((log(S0/c)+(rho2-(sigma^2)/2)*t10)/(sigma*sqrt(t10)))
+P2 <- S0*pnorm((log(S0/c)+(rho2+(sigma^2)/2)*t10)/(sigma*sqrt(t10)))-(c*exp(-rho2*t10))*pnorm((log(S0/c)+(rho2-(sigma^2)/2)*t10)/(sigma*sqrt(t10)))
 
 # Produce plot for figure 3
-fig3 = data.frame(P2, rho2)
-plot3 = ggplot(data = fig3, aes(rho2,P2))+geom_line() + 
+fig3 <- data.frame(P2, rho2)
+plot3 <- ggplot(data = fig3, aes(rho2,P2))+geom_line() + 
   ggtitle("Option price at time t=10 for various interest rates.") +
   xlab("Interest Rate (rho)") + ylab("Option Price (P) at t=10.")
 
 ## 2.2.3 Varying strike price (c)
 
 # Define varying c
-c3=seq(0,5, by=0.01)
+c3 <- seq(0,5, by=0.01)
 
 # Calculate new price series
-P3=S0*pnorm((log(S0/c3)+(rho+(sigma^2)/2)*t10)/(sigma*sqrt(t10)))-(c3*exp(-rho*t10))*pnorm((log(S0/c3)+(rho-(sigma^2)/2)*t10)/(sigma*sqrt(t10)))
+P3 <- S0*pnorm((log(S0/c3)+(rho+(sigma^2)/2)*t10)/(sigma*sqrt(t10)))-(c3*exp(-rho*t10))*pnorm((log(S0/c3)+(rho-(sigma^2)/2)*t10)/(sigma*sqrt(t10)))
 
 # Produce plot for figure 4
-fig4 = data.frame(P3, c3)
-plot4 = ggplot(data = fig4, aes(c3,P3))+geom_line() + 
+fig4 <- data.frame(P3, c3)
+plot4 <- ggplot(data = fig4, aes(c3,P3))+geom_line() + 
   ggtitle("Option price at time t=10 for various strike prices.") +
   xlab("Strike Price (c)") + ylab("Option price (P) at t=10.")
 
@@ -92,13 +93,13 @@ grid.arrange(plot2, plot3, plot4, ncol=3)
 
 ## Define the OU function
 
-rOU=function(n,N,Delta,theta,sigma){ 
-  times=(0:n)*Delta ##vector of t_0,t_1,..,t_n 
-  X=matrix(0,nrow=N,ncol=n+1)
+rOU <- function(n,N,Delta,theta,sigma){ 
+  times<-(0:n)*Delta ##vector of t_0,t_1,..,t_n 
+  X<-matrix(0,nrow=N,ncol=n+1)
   for(i in 1:n){
-    x=X[,i]#current value
-    m=x*exp(-theta*Delta) #mean of new value 
-    v=sigma^2*(1-exp(-2*theta*Delta))/(2*theta) ##variance of new value 
+    x<-X[,i]#current value
+    m<-x*exp(-theta*Delta) #mean of new value 
+    v<-sigma^2*(1-exp(-2*theta*Delta))/(2*theta) ##variance of new value 
     X[,i+1]=rnorm(N,m,sqrt(v)) ##simulate new value
   }
   return(list(X=X,times=times)) 
